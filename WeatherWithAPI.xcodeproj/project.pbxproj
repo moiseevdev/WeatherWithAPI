@@ -37,6 +37,41 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		E93A74DC25F40EBF004D5A9E /* Supporting files */ = {
+			isa = PBXGroup;
+			children = (
+				E9DAEF4925ED8A5E00147DB8 /* AppDelegate.swift */,
+				E9DAEF4B25ED8A5E00147DB8 /* SceneDelegate.swift */,
+				E9DAEF5225ED8A6100147DB8 /* Assets.xcassets */,
+				E9DAEF5725ED8A6100147DB8 /* Info.plist */,
+			);
+			path = "Supporting files";
+			sourceTree = "<group>";
+		};
+		E93A74DD25F40EF4004D5A9E /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				E9DAEF4F25ED8A5E00147DB8 /* Main.storyboard */,
+				E9DAEF5425ED8A6100147DB8 /* LaunchScreen.storyboard */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		E93A74DE25F40F0E004D5A9E /* Models */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		E93A74DF25F40F17004D5A9E /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				E9DAEF4D25ED8A5E00147DB8 /* ViewController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
 		E9DAEF3D25ED8A5E00147DB8 = {
 			isa = PBXGroup;
 			children = (
@@ -56,13 +91,10 @@
 		E9DAEF4825ED8A5E00147DB8 /* WeatherWithAPI */ = {
 			isa = PBXGroup;
 			children = (
-				E9DAEF4925ED8A5E00147DB8 /* AppDelegate.swift */,
-				E9DAEF4B25ED8A5E00147DB8 /* SceneDelegate.swift */,
-				E9DAEF4D25ED8A5E00147DB8 /* ViewController.swift */,
-				E9DAEF4F25ED8A5E00147DB8 /* Main.storyboard */,
-				E9DAEF5225ED8A6100147DB8 /* Assets.xcassets */,
-				E9DAEF5425ED8A6100147DB8 /* LaunchScreen.storyboard */,
-				E9DAEF5725ED8A6100147DB8 /* Info.plist */,
+				E93A74DE25F40F0E004D5A9E /* Models */,
+				E93A74DD25F40EF4004D5A9E /* Views */,
+				E93A74DF25F40F17004D5A9E /* Controllers */,
+				E93A74DC25F40EBF004D5A9E /* Supporting files */,
 			);
 			path = WeatherWithAPI;
 			sourceTree = "<group>";
