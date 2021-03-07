@@ -9,11 +9,54 @@ import UIKit
 
 class ViewController: UIViewController {
 
+    @IBOutlet weak var cityLabel: UILabel!
+    @IBOutlet weak var temperatureLabel: UILabel!
+    @IBOutlet weak var iconLabel: UIImageView!
+    @IBOutlet weak var feelsLikeTemperature: UILabel!
+    
+    let networkWetherManager = NetworkWeatherManager()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        
+        
+
     }
 
 
+    @IBAction func searchPressed(_ sender: UIButton) {
+        searchAlertController(withTitle: "test", message: "test2", style: .alert) { cityName in
+            self.networkWetherManager.fetchCurrentWeather(forCity: cityName)
+        }
+    }
+    
 }
 
+
+
+extension ViewController {
+    func searchAlertController(withTitle title: String?, message: String?, style: UIAlertController.Style, comletionHendler: @escaping (String
+    ) -> Void) {
+        let ac = UIAlertController(title: title, message: message, preferredStyle: style)
+        ac.addTextField { (tf) in
+            tf.placeholder = "Moscow"
+        }
+        
+        let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        
+        let search = UIAlertAction(title: "Search", style: .default) { (UIAlertAction) in
+            let textField = ac.textFields?.first
+            guard let cityName = textField?.text else { return }
+            if cityName != "" {
+//                self.networkWetherManager.fetchCurrentWeather(forCity: cityName)
+                comletionHendler(cityName)
+                print("search info for the \(cityName)")
+            }
+        }
+        
+        ac.addAction(cancel)
+        ac.addAction(search)
+        present(ac, animated: true, completion: nil)
+        
+    }
+}
