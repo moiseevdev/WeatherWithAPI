@@ -25,8 +25,8 @@ class ViewController: UIViewController {
 
 
     @IBAction func searchPressed(_ sender: UIButton) {
-        searchAlertController(withTitle: "test", message: "test2", style: .alert) { cityName in
-            self.networkWetherManager.fetchCurrentWeather(forCity: cityName)
+        searchAlertController(withTitle: "test", message: "test2", style: .alert) { city in
+            self.networkWetherManager.fetchCurrentWeather(forCity: city)
         }
     }
     
@@ -39,7 +39,7 @@ extension ViewController {
     ) -> Void) {
         let ac = UIAlertController(title: title, message: message, preferredStyle: style)
         ac.addTextField { (tf) in
-            tf.placeholder = "Moscow"
+            tf.placeholder = "Saint Petersburg"
         }
         
         let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
@@ -49,8 +49,8 @@ extension ViewController {
             guard let cityName = textField?.text else { return }
             if cityName != "" {
 //                self.networkWetherManager.fetchCurrentWeather(forCity: cityName)
-                comletionHendler(cityName)
-                print("search info for the \(cityName)")
+                let city = cityName.split(separator: " ").joined(separator: "%20")
+                comletionHendler(city)
             }
         }
         
