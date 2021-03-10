@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import CoreLocation
 
 class ViewController: UIViewController {
 
@@ -14,49 +15,60 @@ class ViewController: UIViewController {
     @IBOutlet weak var iconLabel: UIImageView!
     @IBOutlet weak var feelsLikeTemperature: UILabel!
     
-    let networkWetherManager = NetworkWeatherManager()
+    var networkWeatherManager = NetworkWeatherManager()
+    lazy var locationManager: CLLocationManager = {
+        let lm = CLLocationManager()
+        lm.delegate = self
+        lm.desiredAccuracy = kCLLocationAccuracyKilometer
+        lm.requestWhenInUseAuthorization()
+        return lm
+    }()
+
+
+    @IBAction func searchPressed(_ sender: UIButton) {
+        searchAlertController(withTitle: "Enter the name of the city", message: nil, style: .alert) { [unowned self] city in
+            self.networkWeatherManager.fetchCurrentWeather(forSelectRequest: .cityName(city: city))
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        networkWeatherManager.onCompletion = { [weak self] currentWeather in
+            guard let self = self else { return }
+            self.updateInterfaceWith(weather: currentWeather)
+        }
         
-
+        if CLLocationManager.locationServicesEnabled() {
+            locationManager.requestLocation()
+        }
+        
     }
-
-
-    @IBAction func searchPressed(_ sender: UIButton) {
-        searchAlertController(withTitle: "test", message: "test2", style: .alert) { city in
-            self.networkWetherManager.fetchCurrentWeather(forCity: city)
+    
+    func updateInterfaceWith(weather: CurrentWeather) {
+        DispatchQueue.main.async {
+            self.cityLabel?.text = weather.cityName
+            self.temperatureLabel.text = weather.tempString
+            self.feelsLikeTemperature.text = weather.feelsLikeTempString
+            self.iconLabel.image = UIImage(systemName: weather.iconNameString)
         }
     }
     
 }
 
-
-
-extension ViewController {
-    func searchAlertController(withTitle title: String?, message: String?, style: UIAlertController.Style, comletionHendler: @escaping (String
-    ) -> Void) {
-        let ac = UIAlertController(title: title, message: message, preferredStyle: style)
-        ac.addTextField { (tf) in
-            tf.placeholder = "Saint Petersburg"
-        }
+extension ViewController: CLLocationManagerDelegate {
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        guard let location = locations.last else { return }
+        let latitude = location.coordinate.latitude
+        let longitude = location.coordinate.longitude
         
-        let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-        
-        let search = UIAlertAction(title: "Search", style: .default) { (UIAlertAction) in
-            let textField = ac.textFields?.first
-            guard let cityName = textField?.text else { return }
-            if cityName != "" {
-//                self.networkWetherManager.fetchCurrentWeather(forCity: cityName)
-                let city = cityName.split(separator: " ").joined(separator: "%20")
-                comletionHendler(city)
-            }
-        }
-        
-        ac.addAction(cancel)
-        ac.addAction(search)
-        present(ac, animated: true, completion: nil)
-        
+        networkWeatherManager.fetchCurrentWeather(forSelectRequest: .coordinate(latitide: latitude, logitude: longitude))
     }
+    
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print(error)
+    }
+    
 }
+
+
