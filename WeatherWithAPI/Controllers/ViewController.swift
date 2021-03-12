@@ -10,6 +10,7 @@ import CoreLocation
 
 class ViewController: UIViewController {
 
+    
     @IBOutlet weak var cityLabel: UILabel!
     @IBOutlet weak var temperatureLabel: UILabel!
     @IBOutlet weak var iconLabel: UIImageView!
@@ -47,7 +48,7 @@ class ViewController: UIViewController {
     
     func updateInterfaceWith(weather: CurrentWeather) {
         DispatchQueue.main.async {
-            self.cityLabel?.text = weather.cityName
+            self.cityLabel.text = weather.cityName
             self.temperatureLabel.text = weather.tempString
             self.feelsLikeTemperature.text = weather.feelsLikeTempString
             self.iconLabel.image = UIImage(systemName: weather.iconNameString)
